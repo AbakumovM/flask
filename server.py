@@ -12,7 +12,7 @@ Session = get_session_maker()
 
 
 class AdsViews(MethodView):
-    def get(self, ads_id):
+    def get(self, ads_id: int | str):
         with Session() as session:
             ads = get_items(session, Ads, ads_id)
             return jsonify({"id": ads.id, "title": ads.title, "autor": ads.autor})
@@ -23,7 +23,7 @@ class AdsViews(MethodView):
             post = create_items(session, Ads, **new_post)
             return jsonify({"id": post.id})
         
-    def patch(self, ads_id: int):
+    def patch(self, ads_id: int | str):
         up_post = validate(UpdateAds, request.json)
         with Session() as session:
             ads = get_items(session, Ads, ads_id)
@@ -33,14 +33,14 @@ class AdsViews(MethodView):
             session.commit()
             return jsonify({"status": 'success'})
 
-    def delete(self, ads_id: int):
+    def delete(self, ads_id: int | str):
         with Session() as session:
             user = delete_item(session, Ads, ads_id)
             return jsonify({"status": user.status})
 
 
 class UserViews(MethodView):
-    def get(self, user_id):
+    def get(self, user_id: int | str):
         with Session() as session:
             user = get_items(session, User, user_id)
             return jsonify({"id": user.id, "name": user.name, "email": user.email})
@@ -52,7 +52,7 @@ class UserViews(MethodView):
             user = create_items(session, User, **new_user)
             return jsonify({"id": user.id})
 
-    def delete(self, user_id):
+    def delete(self, user_id: int | str):
         with Session() as session:
             user = delete_item(session, User, user_id)
             return jsonify({"status": user.status})
